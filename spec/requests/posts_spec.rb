@@ -12,16 +12,35 @@ RSpec.describe "Posts check", type: :request do
     end
   end
   describe "GET /posts" do
-  #create_list is a method from factory_bot
-  #create_list(name, amount, *traits_and_overrides, &block) ⇒ Array
-  let!(:posts) { create_list(:post, 10, published: true) }
+    #create_list is a method from factory_bot
+    #create_list(name, amount, *traits_and_overrides, &block) ⇒ Array
+    let!(:posts) { create_list(:post, 10, published: true) }
     it "With data in the DB, it should return all the posts" do
       get "/posts"
       payload = JSON.parse(response.body)
       expect(response).to have_http_status(200)
       expect(payload.size).to eq(posts.size)
     end
+
+    describe 'Search' do
+      let!(:mundo) { create(:published_post, title: 'Hola mundo') }
+      let!(:rails) { create(:published_post, title: 'Hola rails') }
+      let!(:ruby) { create(:published_post, title: 'curso ruby') }
+      it "should filter the posts by title" do
+        get "/posts?search=Hola"
+        payload = JSON.parse(response.body)
+        expect(payload).to_not be_empty
+        expect(payload.size).to eq(2)
+        expect(payload.map { |p| p["id"].sort }).to eq([mundo.id, rails.id].sort)
+        expect(response).to have_http_status(200)
+      end
+      
+    
+    end
   end
+
+
+
   describe "GET /post/{id}" do
     let!(:post) { create(:post) }
 
