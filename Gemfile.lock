@@ -193,6 +193,7 @@ GEM
 
 PLATFORMS
   arm64-darwin-21
+  arm64-darwin-22
 
 DEPENDENCIES
   active_model_serializers (~> 0.10.8)
@@ -214,4 +215,4 @@ RUBY VERSION
    ruby 2.6.10p210
 
 BUNDLED WITH
-   2.4.3
+   2.4.5

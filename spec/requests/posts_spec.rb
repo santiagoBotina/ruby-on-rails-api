@@ -31,7 +31,7 @@ RSpec.describe "Posts check", type: :request do
         payload = JSON.parse(response.body)
         expect(payload).to_not be_empty
         expect(payload.size).to eq(2)
-        expect(payload.map { |p| p["id"].sort }).to eq([mundo.id, rails.id].sort)
+        expect(payload.map { |p| p["id"] }.sort).to eq([mundo.id, rails.id].sort)
         expect(response).to have_http_status(200)
       end
       

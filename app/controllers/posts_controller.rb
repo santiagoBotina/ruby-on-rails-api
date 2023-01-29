@@ -11,7 +11,12 @@ class PostsController < ApplicationController
 
   #For all published records
   def index
-    @post = Post.where(published: true)
+    @post = Post.where(published: true).includes(:user)
+    if params[:search].present? && !params[:search].nil?
+      @post = PostSearchService.search(@post, params[:search])
+    end
+    ##includes the related models, in this case, "User"
+    ##To solve the n+1 query problem
     render json: @post, status: :ok
   end
 
